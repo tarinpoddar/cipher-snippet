@@ -11,7 +11,36 @@
 |
 */
 
+// Homepage
 Route::get('/', function()
 {
-	return View::make('hello');
+	return View::make('index');
 });
+
+# Display add form
+Route::get('/add/', function() {
+
+	return View::make('add');
+	
+});
+
+
+# Process add form
+Route::post('/add/', function() {
+	
+	
+		
+});
+
+
+// Just to test my database connection
+Route::get('mysql-test', function() {
+
+    # Use the DB component to select all the databases
+    $results = DB::select('SHOW DATABASES;');
+
+    # If the "Pre" package is not installed, you should output using print_r instead
+    return Pre::render($results);
+
+});
+
