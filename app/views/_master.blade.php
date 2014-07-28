@@ -45,20 +45,22 @@
       <input type="text" class="form-control col-lg-8" placeholder="Search">
     </form>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#">Link</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li class="divider"></li>
-          <li><a href="#">Separated link</a></li>
-        </ul>
-      </li>
+
+      <li><a href="/signup">Sign up</a></li>
+
+      <li><a href="/logout">Log Out</a></li>
+
     </ul>
   </div>
 </div>
+
+    @if(Session::get('flash_message'))
+
+      <div class="alert alert-dismissable alert-warning">
+           <h3> {{ Session::get('flash_message') }} </h3>
+      </div>
+
+    @endif
 
 <div class="container">
 

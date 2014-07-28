@@ -12,11 +12,24 @@ class CreateTables extends Migration {
 	 */
 	public function up()
 	{
+		// Users table
+		Schema::create('users', function($table) {
+			$table->increments('id');
+			$table->string('email')->unique();
+			$table->string('name');
+			$table->boolean('remember_token');
+			$table->string('password');
+			$table->timestamps();
+		});
+
 		// Create Snippets table
 		Schema::create('snippets', function($table) {
 
 			# AI, PK
 			$table->increments('id');
+
+			# Foreign key - connecting it to users
+			$table->integer('user_id')->unsigned();
 
 			# created_at, updated_at columns
 			$table->timestamps();
@@ -25,6 +38,9 @@ class CreateTables extends Migration {
 			$table->string('title');
 			$table->string('language');
 			$table->text('code');
+
+			# Define foreign keys...
+			$table->foreign('user_id')->references('id')->on('users');
 
 		});
 
@@ -64,6 +80,7 @@ class CreateTables extends Migration {
 	 */
 	public function down()
 	{
+		Schema::drop('users');
 		Schema::drop('snippets');
 		Schema::drop('tags');
 		Schema::drop('snippet_tag');
