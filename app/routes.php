@@ -11,6 +11,7 @@
 |
 */
 
+
 // Homepage
 Route::get('/', function()
 {
@@ -18,89 +19,29 @@ Route::get('/', function()
 });
 
 
-Route::get('/signup',
-	array(
-		'before' => 'guest',
-		function() {
-	    	return View::make('signup');
-		}
-	)
-);
+/*-------------------------------------------------------------------------------------------------
+// ! User
+Explicit Routing
+-------------------------------------------------------------------------------------------------*/
+# Note: the beforeFilter for 'guest' on getSignup and getLogin is handled in the Controller
+Route::get('/signup', 'UserController@getSignup'); 
+Route::get('/login', 'UserController@getLogin' );
+Route::post('/signup', ['before' => 'csrf', 'uses' => 'UserController@postSignup'] );
+Route::post('/login', ['before' => 'csrf', 'uses' => 'UserController@postLogin'] );
+Route::get('/logout', ['before' => 'auth', 'uses' => 'UserController@getLogout'] );
 
-
-Route::post('/signup', array('before' => 'csrf', function()
-{
-
-	$user = new User;
-	$user->name = Input::get('name');
-	$user->email = Input::get('email');
-	$user->password = Hash::make(Input::get('password'));
-
-	try {
-		$user->save();
-	}
-	catch (Exception $e) {
-		return Redirect::to('/')
-			->with('flash_message', 'Sign up failed; please try again.')
-			->withInput();
-	}
-
-	# Log in
-	Auth::login($user);
-	
-	return Redirect::to('/')->with('flash_message', 'Welcome to Cipher Snippets!');
-
-}));
-
-Route::get('/login',
-	array(
-		'before' => 'guest',
-		function() {
-	    	return View::make('login');
-		}
-	)
-);
-
-Route::post('/login', array('before' => 'csrf', function()
-{
-
-	$credentials = Input::only('email', 'password');
-	
-		if (Auth::attempt($credentials, $remember = true)) {
-			return Redirect::intended('/')->with('flash_message', 'Welcome Back!');
-		}
-		else {
-			return Redirect::to('/login')
-				->with('flash_message', 'Log in failed! please try again.')
-				->withInput();
-		}
-		
-		return Redirect::to('login');
-
-}));
-
-Route::get('/logout', function() {
-
-    # Log out
-    Auth::logout();
-
-    # Send them to the homepage
-    return Redirect::to('/')
-    		->with('flash_message', 'Thank you for using Cipher Snippets! See you again soon');
-
-});
 
 
 Route::get('/profile', function()
 {
-	$collection = Snippet::all();
-/*
-	foreach($collection as $book) {
-    	echo $book."<br>";
-	} 
-*/
+	$live_user = Auth::user();
+	$snippets = Snippet::where('user_id', '=', $live_user->id)->get()->reverse()->toArray();
 
-	return View::make('profile')->with('collection', $collection);
+	// echo Pre::render($snippets);
+
+	return View::make('profile')->with('snippets', $snippets)
+								->with('live_user', $live_user);
+
 });
 
 
@@ -117,25 +58,20 @@ Route::post('/add/', function() {
 
 	$snippet = new Snippet();
 
-	// $snippet->fill(Input::all());
-
 	$snippet->title = Input::get('title');
 	$snippet->language = Input::get('language');
 	$snippet->code = Input::get('code');
 	// connecting it to the user
 	$snippet->user_id = Auth::id();
 	$snippet->save();
-	echo "snippet saved "."<br>";
-
-	//$debug_new_count = 0;
-	//$debug_old_count = 0;
+	
 
 	// loop 6 times for 6 tags
 	for ($i=1; $i <= 6; $i++) { 
 		
 		// get the user input
 		$tag = Input::get('tag'.$i);
-		echo $tag;
+		
 
 		// if user has given some input
 		if ($tag) {
@@ -146,7 +82,7 @@ Route::post('/add/', function() {
 			
 			// if it exists - attach it to the snippet
 			if (!$tag_object->isEmpty()) {
-  					$snippet->tags()->attach($tag_object[0]);
+  					$snippet->tags()->attach($tag_object->first());
 			}
 			
 
@@ -155,18 +91,11 @@ Route::post('/add/', function() {
 				$new_tag = Tag::create(array('name' => $tag));
 
 				$snippet->tags()->attach($new_tag);
-				//echo "created and attached new tag";
-				//$debug_new_count++;
 			}
 		}	
 	}
 
-	echo "done";	
-	/*
-	echo "attached ".($debug_new_count+$debug_old_count)." new tags"."<br>";
-	echo "created ".$debug_new_count." new tags"."<br>";
-	echo "old ".$debug_old_count;
-	*/
+	return Redirect::to('/profile')->with('flash_message', 'Your Snippet has been added');	
 });
 
 
@@ -177,6 +106,20 @@ Route::post('/add/', function() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ###### Helper Function ###### */
 
 Route::get('/add-data', function() {
 
