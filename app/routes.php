@@ -52,6 +52,33 @@ Route::post('/signup', array('before' => 'csrf', function()
 
 }));
 
+Route::get('/login',
+	array(
+		'before' => 'guest',
+		function() {
+	    	return View::make('login');
+		}
+	)
+);
+
+Route::post('/login', array('before' => 'csrf', function()
+{
+
+	$credentials = Input::only('email', 'password');
+	
+		if (Auth::attempt($credentials, $remember = true)) {
+			return Redirect::intended('/')->with('flash_message', 'Welcome Back!');
+		}
+		else {
+			return Redirect::to('/login')
+				->with('flash_message', 'Log in failed! please try again.')
+				->withInput();
+		}
+		
+		return Redirect::to('login');
+
+}));
+
 Route::get('/logout', function() {
 
     # Log out
@@ -64,17 +91,83 @@ Route::get('/logout', function() {
 });
 
 
+Route::get('/profile', function()
+{
+	$collection = Snippet::all();
+/*
+	foreach($collection as $book) {
+    	echo $book."<br>";
+	} 
+*/
+
+	return View::make('profile')->with('collection', $collection);
+});
 
 
+# Display add form
+Route::get('/add/', function() {
+
+	return View::make('add');
+	
+});
 
 
+Route::post('/add/', function() {
 
 
+	$snippet = new Snippet();
 
+	// $snippet->fill(Input::all());
 
+	$snippet->title = Input::get('title');
+	$snippet->language = Input::get('language');
+	$snippet->code = Input::get('code');
+	// connecting it to the user
+	$snippet->user_id = Auth::id();
+	$snippet->save();
+	echo "snippet saved "."<br>";
 
+	//$debug_new_count = 0;
+	//$debug_old_count = 0;
 
+	// loop 6 times for 6 tags
+	for ($i=1; $i <= 6; $i++) { 
+		
+		// get the user input
+		$tag = Input::get('tag'.$i);
+		echo $tag;
 
+		// if user has given some input
+		if ($tag) {
+
+			// Query the database to find if the tag exists
+			// $tags = DB::select(DB::raw('select * from tags where name = recursion'));
+			$tag_object = Tag::where('name', '=', $tag)->get();
+			
+			// if it exists - attach it to the snippet
+			if (!$tag_object->isEmpty()) {
+  					$snippet->tags()->attach($tag_object[0]);
+			}
+			
+
+			// if it doesn't exist, create a new tag and attach it to the snippet
+			else {
+				$new_tag = Tag::create(array('name' => $tag));
+
+				$snippet->tags()->attach($new_tag);
+				//echo "created and attached new tag";
+				//$debug_new_count++;
+			}
+		}	
+	}
+
+	echo "done";	
+	/*
+	echo "attached ".($debug_new_count+$debug_old_count)." new tags"."<br>";
+	echo "created ".$debug_new_count." new tags"."<br>";
+	echo "old ".$debug_old_count;
+	*/
+});
 
 
 
@@ -171,110 +264,6 @@ Route::get('/add-data', function() {
 	return "All done - Hurray!!";
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Display add form
-Route::get('/add/', function() {
-
-	return View::make('add');
-	
-});
-
-
-# Process add form
-Route::post('/add/', function() {
-	
-	$current_tag = Input::get('tag1');
-	$tag_in_table = DB::table('tags')->where('name', $current_tag)->pluck('name');
-
-	if ($tag_in_table) {
-		echo $current_tag."<br>";
-		echo $tag_in_table."<br>";
-		echo "found";
-	}
-	else {
-
-		echo $tag_in_table."<br>";
-		echo "not found";
-	}
-
-	$particular_row = DB::table('tags')->where('name', $current_tag)->get();
-	
-	// echo $particular_row->['name'];
-	// dd($particular_row);
-	return Pre::render($particular_row);
-
-
-
-	
-	// echo Pre::render(Input::all());
-	
-	$new_snippet = new Snippet();
-
-	$new_snippet->title = Input::get('title');
-	$new_snippet->language = Input::get('language');
-	$new_snippet->code = Input::get('code');
-
-	// made entry in the table (added to database)
-	$new_snippet->save();
-
-
-	// Working on the tags below:
-
-	$i = 1; // tag counter
-	$current_tag_num = "tag".$i;
-	$current_tag = Input::get($current_tag_num);
-
-	// if user has given a input for the particular tag
-	while ($current_tag) {
-
-		// finding that particular tag in the tags table
-		$particular_row = DB::table('tags')->where('name', '=', $current_tag)->get();
-		$tag_name = $particular_row->name;
-
-		// if the current tag exists in the table
-		if($tag_in_table) {
-// check
-			// link the snippet to this particular tag
-			$new_snippet->tags()->attach($tag_in_table);
-
-		}
-
-		else {
-			
-			// create a new tag
-			$new_tag = new Tag();
-			$new_tag->name = $current_tag;
-			$new_tag->save(); // add it to the database
-
-			// connect it to the snippet
-			$new_snippet->tags()->attach($new_tag);
-		}
-
-		$i++;
-		$current_tag_num = "tag".$i;
-		$current_tag = Input::get($current_tag_num);
-	}
-
-	return "Added a new row";
-		
-});
-
 
 // Just to test my database connection
 Route::get('mysql-test', function() {

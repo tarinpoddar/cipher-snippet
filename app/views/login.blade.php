@@ -4,17 +4,10 @@
 @section('content')
 
 
-{{ Form::open(array('url' => url('/signup'), 'class'=>'form-horizontal')) }}
+{{ Form::open(array('url' => url('/login'), 'class'=>'form-horizontal')) }}
 
   <fieldset>
-    <legend>Sign Up</legend>
-
-    <div class="form-group">
-      <label class="col-lg-2 control-label">Name</label>
-      <div class="col-lg-10">
-        <input type="text" name="name" class="form-control" id="inputEmail" placeholder="Name">
-      </div>
-    </div>
+    <legend>Login</legend>
 
     <div class="form-group">
       <label for="inputEmail" class="col-lg-2 control-label">Email</label>
@@ -35,7 +28,7 @@
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
         <button class="btn btn-default">Cancel</button>
-        <button type="submit" class="btn btn-primary">Sign up</button>
+        <button type="submit" class="btn btn-primary">Login</button>
       </div>
     </div>
   </fieldset>

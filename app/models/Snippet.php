@@ -3,6 +3,9 @@
 class Snippet extends Eloquent {
 
 
+    # The guarded properties specifies which attributes should *not* be mass-assignable
+    //protected $guarded = array('id', 'user_id', 'created_at', 'updated_at');
+
 	# Relationship method...
     public function user() {
     

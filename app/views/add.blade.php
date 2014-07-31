@@ -13,14 +13,14 @@
     <div class="form-group">
       <label class="col-lg-2 control-label">Title</label>
       <div class="col-lg-10">
-        <input type="text" name="title" class="form-control" id="inputEmail" placeholder="Title">
+        <input type="text" name='title' class="form-control" id="inputEmail" placeholder="Title">
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-lg-2 control-label"> Programming Language </label>
       <div class="col-lg-10">
-        <input type="text" name="language" class="form-control" id="inputEmail" placeholder="Language">
+        <input type="text" name='language' class="form-control" id="inputEmail" placeholder="Language">
       </div>
     </div>
    
@@ -33,7 +33,7 @@
     	
       
       <div class="col-lg-10">
-        <textarea class="form-control" name="code" rows="15" id="textArea" 
+        <textarea class="form-control" name='code' rows="15" id="textArea" 
         placeholder="Other people will use your code. Try and make it neat, short and generalistic"></textarea>
       </div>
     </div>

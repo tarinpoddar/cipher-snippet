@@ -46,9 +46,17 @@
     </form>
     <ul class="nav navbar-nav navbar-right">
 
-      <li><a href="/signup">Sign up</a></li>
+      @if (Auth::check())
+        <li> <a href="/profile"> Profile </a> </li>  
+      @else
+        <li><a href="/signup">Sign up</a></li>
+      @endif
 
-      <li><a href="/logout">Log Out</a></li>
+      @if(Auth::check())
+        <li><a href="/logout">Log Out</a></li>
+      @else
+        <li><a href="/login">Login</a></li>
+      @endif   
 
     </ul>
   </div>
