@@ -25,19 +25,18 @@
     <a class="navbar-brand" href="/">Cipher Snippet</a>
   </div>
   <div class="navbar-collapse collapse navbar-responsive-collapse">
-    <ul class="nav navbar-nav">
-     
-      
-      
-    </ul>
+    
     <form class="navbar-form navbar-left">
       <input type="text" class="form-control col-lg-8" placeholder="Search">
     </form>
+    <ul class="nav navbar-nav">
+     <li class="active"> <a href="/snippets"> View All Snippets </a></li>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
 
       @if (Auth::check())
         <li class="active"><a href="/add"> Add a Snippet </a></li>
-        <li> <a href="/profile"> Profile </a> </li>  
+        <li> <a href="/profile"> {{ Auth::user()->name }} </a> </li>  
       @else
         <li><a href="/signup">Sign up</a></li>
       @endif

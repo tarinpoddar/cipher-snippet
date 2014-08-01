@@ -13,11 +13,11 @@
 
 @foreach ($snippets as $snippet)
 
-<div class="jumbotron">
-  <h2> <strong> {{ $snippet['title'] }} </strong> - {{ $snippet['language'] }}  </h2>
-  <p> {{ $snippet['code'] }} </p>
-  
-</div>
+
+		<h4> <strong> {{ $snippet['title'] }} </strong> - {{ $snippet['language'] }}  </h4>
+		<div class="jumbotron">
+  			<p> {{ $snippet['code'] }} </p>
+  		</div>
 
 @endforeach
 	

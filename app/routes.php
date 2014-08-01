@@ -15,7 +15,9 @@
 // Homepage
 Route::get('/', function()
 {
-	return View::make('index');
+	$tags = Tag::all();
+	// echo Pre::render($tags);
+	return View::make('index')->with('tags', $tags);
 });
 
 
@@ -43,6 +45,37 @@ Route::get('/profile', function()
 								->with('live_user', $live_user);
 
 });
+
+
+# Display Snippets
+Route::get('/snippets/{id?}', function($id = null) {
+
+	if ($id == null) {
+		$snippets = Snippet::all();
+		return View::make('snippet_view')->with('snippets', $snippets);
+	}
+	
+	else {
+		$snippets = Snippet::where('id', '=', $id)->first();
+		return View::make('snippet_view')->with('snippets', $snippets);
+	}	
+});
+
+
+# Display Snippets based on tags
+Route::get('/tag-snippet/{id}', function($id) {
+
+	$tag = Tag::where('id', '=', $id)->first();
+	$snippets = $tag->snippets->toArray();
+	//echo Pre::render($snippets);
+
+	return View::make('tag_snippet')->with('snippets',$snippets)
+									 ->with('tag', $tag);
+});
+
+
+
+
 
 
 # Display add form
