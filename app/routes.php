@@ -67,10 +67,9 @@ Route::get('/tag-snippet/{id}', function($id) {
 
 	$tag = Tag::where('id', '=', $id)->first();
 	$snippets = $tag->snippets->toArray();
-	//echo Pre::render($snippets);
+	$tag = $tag->toArray();
 
-	return View::make('tag_snippet')->with('snippets',$snippets)
-									 ->with('tag', $tag);
+	return View::make('tag_snippet')->with('snippets',$snippets)->with('tag', $tag);
 });
 
 
@@ -130,11 +129,6 @@ Route::post('/add/', function() {
 
 	return Redirect::to('/profile')->with('flash_message', 'Your Snippet has been added');	
 });
-
-
-
-
-
 
 
 
@@ -251,4 +245,19 @@ Route::get('mysql-test', function() {
     return Pre::render($results);
 
 });
+
+
+/*
+Route::get('/delete-data', function() {
+	
+	# Clear the tables to a blank slate
+	DB::statement('SET FOREIGN_KEY_CHECKS=0'); # Disable FK constraints so that all rows can be deleted, even if there's an associated FK
+	DB::statement('TRUNCATE snippets');
+	DB::statement('TRUNCATE users');
+	DB::statement('TRUNCATE tags');
+	DB::statement('TRUNCATE snippet_tag');
+
+	return "data deleted =(  CHECK DATABASE";
+});
+*/
 
