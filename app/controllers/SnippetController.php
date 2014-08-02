@@ -95,13 +95,22 @@ class SnippetController extends BaseController {
 					}
 			}
 
-			/* DELETE OLD RELATIONS
-			foreach ($oldTags as $eachTag) {
+			//DELETE OLD RELATIONS
+			foreach ($oldTagsArr as $eachTag) {
 				if ($eachTag) {
+					$tag_object = Tag::where('name', '=', $eachTag)->get()->first();
+					//echo $tag_object['name'];
+					//echo Pre::render($tag_object);
+					//echo $tag_object['name'];
+					//dd();
+
+					DB::table('snippet_tag')->where('tag_id', '=', $tag_object['id'])
+											->where('snippet_id', '=', $id)
+											->delete();
 
 				}
 			}
-			*/
+			
 		
 		return Redirect::to('/profile')->with('flash_message', "Your changes have been saved!");
 
