@@ -6,20 +6,29 @@
 
 @section('content')
 
+  @foreach($errors->all() as $message) 
+
+    <div class="alert alert-dismissable alert-danger">
+      <strong> {{ $message }}  </strong>
+    </div>
+
+  @endforeach
+
+
 {{ Form::open(array('url' => url('/add'), 'class'=>'form-horizontal', 'method' => 'post')) }}
   <fieldset>
     <legend> Make a new Code Snippet </legend>
     <div class="form-group">
       <label class="col-lg-2 control-label">Title</label>
       <div class="col-lg-10">
-        <input type="text" name='title' class="form-control" id="inputEmail" placeholder="Title">
+        {{ Form::text('title', null, array('class' => 'form-control', 'id' => 'inputEmail', 'placeholder' => 'Title')) }}
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-lg-2 control-label"> Programming Language </label>
       <div class="col-lg-10">
-        <input type="text" name='language' class="form-control" id="inputEmail" placeholder="Language">
+       {{ Form::text('language', null, array('class' => 'form-control', 'id' => 'inputEmail', 'placeholder' => 'Language')) }}
       </div>
     </div>
    
@@ -27,8 +36,8 @@
     <div class="form-group">
     	<label for="textArea" class="col-lg-2 control-label">Code</label>
       <div class="col-lg-10">
-        <textarea class="form-control" name='code' rows="15" id="textArea" 
-        placeholder="Other people will use your code. Try and make it neat, short and generalistic"></textarea>
+        {{ Form::textarea('code', null, array('class' => 'form-control', 'rows' => '15', 'id' => 'textArea',
+            'placeholder' => 'Other people will use your code. Try and make it neat, short and generalistic')) }}
       </div>
     </div>
 

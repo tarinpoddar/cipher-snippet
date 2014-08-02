@@ -6,20 +6,31 @@
 
 {{ Form::open(array('url' => url('/signup'), 'class'=>'form-horizontal')) }}
 
+  @foreach($errors->all() as $message) 
+
+    <div class="alert alert-dismissable alert-danger">
+      <strong> {{ $message }}  </strong>
+    </div>
+
+  @endforeach
+
   <fieldset>
     <legend>Sign Up</legend>
 
     <div class="form-group">
       <label class="col-lg-2 control-label">Name</label>
       <div class="col-lg-10">
-        <input type="text" name="name" class="form-control" id="inputEmail" placeholder="Name">
+        
+        {{ Form::text('name', null, array('class' => 'form-control', 'id' => 'inputEmail', 'placeholder' => 'name')) }}
       </div>
     </div>
 
     <div class="form-group">
       <label for="inputEmail" class="col-lg-2 control-label">Email</label>
       <div class="col-lg-10">
-        <input type="text" name="email" class="form-control" id="inputEmail" placeholder="Email">
+       
+        {{ Form::text('email', null, array('class' => 'form-control', 'id' => 'inputEmail', 'placeholder' => 'Email')) }}
+
       </div>
     </div>
 

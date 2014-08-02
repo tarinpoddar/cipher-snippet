@@ -5,9 +5,13 @@
 
 <h1 id = "mainheading"> View and Share tons of Code Snippets </h1>
 
+<h2 class="subheadingindex"> Choose from the category you're looking for </h2>
+
+
 	@foreach ($tags as $tag)
 
 
+	
 	<?php   
 		$url = '/tag-snippet/'.$tag->id;
 		//echo $url; 
@@ -16,6 +20,7 @@
 
 		$random = rand(0, 5);			 
 	 
+
 	echo Form::open(array('url' => $url, 'method' => 'get', 'class' => 'button_form'));  ?>
 	
     		
@@ -24,6 +29,8 @@
 
 		{{ Form::close() }}
 	
+	
+
 	@endforeach
     	
 	

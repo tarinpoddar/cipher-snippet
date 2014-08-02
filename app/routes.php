@@ -81,6 +81,25 @@ Route::get('/add/', function() {
 
 Route::post('/add/', function() {
 
+	# Step 1) Define the rules			
+		$rules = array(
+			'title' => 'required',
+			'language' => 'required',
+			'code' => 'required'	
+		);
+
+		# Step 2) 		
+		$validator = Validator::make(Input::all(), $rules);
+
+		# Step 3
+		if($validator->fails()) {
+			
+			return Redirect::to('/add')
+				->with('flash_message', "Oh Snap! Couldn't add the snippet. please fix the errors listed below.")
+				->withInput()
+				->withErrors($validator);
+		}		
+
 
 	$snippet = new Snippet();
 

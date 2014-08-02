@@ -16,6 +16,25 @@ class UserController extends BaseController {
 
 	public function postSignup() {
 
+		# Step 1) Define the rules			
+		$rules = array(
+			'name' => 'required',
+			'email' => 'required|email|unique:users,email',
+			'password' => 'required|min:6'	
+		);
+
+		# Step 2) 		
+		$validator = Validator::make(Input::all(), $rules);
+
+		# Step 3
+		if($validator->fails()) {
+			
+			return Redirect::to('/signup')
+				->with('flash_message', 'Oh Snap! Sign up failed! please fix the errors listed below.')
+				->withInput()
+				->withErrors($validator);
+		}		
+
 		$user = new User;
 		$user->name = Input::get('name');
 		$user->email = Input::get('email');
@@ -42,6 +61,26 @@ class UserController extends BaseController {
 
 
 	public function postLogin() {
+
+		# Step 1) Define the rules			
+		$rules = array(
+			'email' => 'required|email',
+			'password' => 'required'	
+		);
+
+		# Step 2) 		
+		$validator = Validator::make(Input::all(), $rules);
+
+		# Step 3
+		if($validator->fails()) {
+			
+			return Redirect::to('/login')
+				->with('flash_message', 'Oh Snap! Login failed! please fix the errors listed below.')
+				->withInput()
+				->withErrors($validator);
+		}		
+
+
 		$credentials = Input::only('email', 'password');
 	
 		if (Auth::attempt($credentials, $remember = true)) {

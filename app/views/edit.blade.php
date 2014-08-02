@@ -6,15 +6,19 @@
 
 @section('content')
 
+  @foreach($errors->all() as $message) 
+
+    <div class="alert alert-dismissable alert-danger">
+      <strong> {{ $message }}  </strong>
+    </div>
+
+  @endforeach
+
 
 {{ Form::model($snippet, ['method' => 'post', 'action' => ['SnippetController@postEdit', $snippet->id], 'class' => 'form-horizontal' ]) }}
 
   <fieldset>
     <legend> <strong> Edit: </strong> <br> {{ $snippet->title }} </legend>
-
-   
-       
-     
 
       <div class="form-group">
         <label class="col-lg-2 control-label">Title</label>

@@ -3,10 +3,18 @@
 	font-weight: bold;
 	
 }
- #tagsinput {
+
+#tagsinput {
  	width: 300px;
  	display: inline;
  }
+
 .button_form {
-	display: inline;
-}	
+	display: inline-block;
+	margin: 4px;
+}
+
+.subheadingindex {
+	text-align: center;
+	margin-bottom: 30px;
+}

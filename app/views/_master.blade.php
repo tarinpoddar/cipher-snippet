@@ -54,7 +54,7 @@
     @if(Session::get('flash_message'))
 
       <div class="alert alert-dismissable alert-warning">
-           <h3> {{ Session::get('flash_message') }} </h3>
+         <h3> <strong> {{ Session::get('flash_message') }}  </strong> </h3>
       </div>
 
     @endif
