@@ -120,4 +120,13 @@ class SnippetController extends BaseController {
 		
 	}
 	
+
+	public function getDelete($id) {
+
+		DB::table('snippet_tag')->where('snippet_id', '=', $id)->delete();
+		Snippet::where('id', '=', $id)->delete();
+		return Redirect::to('/profile')->with('flash_message', "Snippet Deleted!");
+
+	}
+
 }

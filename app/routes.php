@@ -127,6 +127,7 @@ Route::post('/add/', function() {
 
 Route::get('/edit/{id}', 'SnippetController@getEdit');
 Route::post('/edit/{id}', 'SnippetController@postEdit');
+Route::get('/delete/{id}', 'SnippetController@getDelete');
 
 /*
 # Display edit form
