@@ -17,7 +17,7 @@
 	@endforeach
 
 <!-- 1 single snippet -->
-@elseif (count($snippets) == 1) 
+@else
 	
 	<h4> <strong> {{ $snippets['title'] }} </strong> - {{ $snippets['language'] }}  </h4>
 	<div class="jumbotron">	

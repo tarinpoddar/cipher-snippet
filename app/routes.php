@@ -39,8 +39,6 @@ Route::get('/profile', function()
 	$live_user = Auth::user();
 	$snippets = Snippet::where('user_id', '=', $live_user->id)->get()->reverse()->toArray();
 
-	// echo Pre::render($snippets);
-
 	return View::make('profile')->with('snippets', $snippets)
 								->with('live_user', $live_user);
 
@@ -52,13 +50,11 @@ Route::get('/snippets/{id?}', function($id = null) {
 
 	if ($id == null) {
 		$snippets = Snippet::all();
-		return View::make('snippet_view')->with('snippets', $snippets);
 	}
-	
 	else {
 		$snippets = Snippet::where('id', '=', $id)->first();
-		return View::make('snippet_view')->with('snippets', $snippets);
-	}	
+	}
+	return View::make('snippet_view')->with('snippets', $snippets);
 });
 
 
@@ -67,8 +63,6 @@ Route::get('/tag-snippet/{id}', function($id) {
 
 	$tag = Tag::where('id', '=', $id)->first();
 	$snippets = $tag->snippets->toArray();
-	$tag = $tag->toArray();
-
 	return View::make('tag_snippet')->with('snippets',$snippets)->with('tag', $tag);
 });
 
