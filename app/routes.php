@@ -125,6 +125,35 @@ Route::post('/add/', function() {
 });
 
 
+Route::get('/edit/{id}', 'SnippetController@getEdit');
+Route::post('/edit/{id}', 'SnippetController@postEdit');
+
+/*
+# Display edit form
+Route::get('/edit/{id}', function($id) {
+
+	$snippet = Snippet::find($id);
+	//echo Pre::render($snippet);
+	$tags = $snippet->tags;
+	//echo $tags[2]['name'];
+	//echo Pre::render($tags);
+	//dd();
+	//return "yes route".$id;
+	//return View::make('edit');
+
+	return View::make('edit')->with('snippet', $snippet)
+							 ->with('tags', $tags);
+});
+
+Route::post('/edit{id}', function($id) {
+
+	$snippet = Snippet::find($id);
+	return $snippet->title;
+
+});
+*/
+
+
 
 
 

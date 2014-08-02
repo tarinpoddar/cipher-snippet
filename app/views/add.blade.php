@@ -6,8 +6,7 @@
 
 @section('content')
 
-
-<form class="form-horizontal" method="post" name="add_snippet" action="/add">
+{{ Form::open(array('url' => url('/add'), 'class'=>'form-horizontal', 'method' => 'post')) }}
   <fieldset>
     <legend> Make a new Code Snippet </legend>
     <div class="form-group">
@@ -26,12 +25,7 @@
    
 
     <div class="form-group">
-
     	<label for="textArea" class="col-lg-2 control-label">Code</label>
-
-    
-    	
-      
       <div class="col-lg-10">
         <textarea class="form-control" name='code' rows="15" id="textArea" 
         placeholder="Other people will use your code. Try and make it neat, short and generalistic"></textarea>
@@ -69,7 +63,7 @@
       </div>
     </div>
   </fieldset>
-</form>
+{{ Form::close() }}
 
 
 

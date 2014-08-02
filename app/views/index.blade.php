@@ -12,7 +12,7 @@
 		$url = '/tag-snippet/'.$tag->id;
 		//echo $url; 
 	 
-	echo Form::open(array('url' => $url, 'method' => 'get'));  ?>
+	echo Form::open(array('url' => $url, 'method' => 'get', 'class' => 'button_form'));  ?>
 	
     		<button type="submit" class="btn btn-success"> {{ $tag->name }} </button>
 		{{ Form::close() }}

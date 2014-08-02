@@ -4,7 +4,7 @@
 @section('content')
 
 
-{{ Form::open(array('url' => url('/login'), 'class'=>'form-horizontal')) }}
+{{ Form::open(array('url' => url('/login'), 'class'=>'form-horizontal', 'method' => 'post')) }}
 
   <fieldset>
     <legend>Login</legend>
