@@ -26,9 +26,9 @@
   </div>
   <div class="navbar-collapse collapse navbar-responsive-collapse">
     
-    <form class="navbar-form navbar-left">
-      <input type="text" class="form-control col-lg-8" placeholder="Search">
-    </form>
+    {{ Form::open(array('url' => url('/query'), 'class'=>'navbar-form navbar-left', 'method' => 'post')) }}
+      <input type="text" name="query" class="form-control col-lg-8" placeholder="Search">
+    {{ Form::close() }}
     <ul class="nav navbar-nav">
      <li class="active"> <a href="/snippets"> View All Snippets </a></li>
     </ul>

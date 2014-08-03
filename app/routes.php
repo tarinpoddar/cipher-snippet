@@ -350,6 +350,29 @@ Route::get('/trigger-error',function() {
 
 });
 
+Route::post('/query', function() {
+
+	$query = Input::get('query');
+	
+	if($query) {
+		
+			# Eager load tags and author
+	 		$snippets = Snippet::with('tags')
+	 		->whereHas('tags', function($q) use($query) {
+			    $q->where('name', 'LIKE', "%$query%");
+			})
+			->orWhere('title', 'LIKE', "%$query%")
+			->orWhere('language', 'LIKE', "%$query%")
+			->get();	
+			$snippets = $snippets->toArray();
+			return View::make('query')->with('snippets', $snippets)
+									  ->with('query', $query);	
+	}
+	else {
+		return Redirect::to('/')->with('flash_message', 'Please type a valid query!');
+	}
+});
+
 /*
 Route::get('/delete-data', function() {
 	
