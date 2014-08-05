@@ -37,7 +37,7 @@
     <div class="form-group">
       <label for="textArea" class="col-lg-2 control-label">Code</label>
       <div class="col-lg-10">
-        {{ Form::textarea('code', $snippet->code, array('class' => 'form-control')) }}
+        {{ Form::textarea('code', $snippet->code, array('class' => 'form-control', 'id' => 'textbox')) }}
       </div>
     </div>
 
@@ -65,7 +65,6 @@
 
      <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
-        <button class="btn btn-default">Cancel</button>
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </div>

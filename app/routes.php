@@ -31,147 +31,27 @@ Route::get('/login', 'UserController@getLogin' );
 Route::post('/signup', ['before' => 'csrf', 'uses' => 'UserController@postSignup'] );
 Route::post('/login', ['before' => 'csrf', 'uses' => 'UserController@postLogin'] );
 Route::get('/logout', ['before' => 'auth', 'uses' => 'UserController@getLogout'] );
+Route::get('/profile', 'UserController@getProfile');
 
 
-
-Route::get('/profile', function()
-{
-	$live_user = Auth::user();
-	$snippets = Snippet::where('user_id', '=', $live_user->id)->get()->reverse()->toArray();
-
-	return View::make('profile')->with('snippets', $snippets)
-								->with('live_user', $live_user);
-
-});
-
-
-# Display Snippets
-Route::get('/snippets/{id?}', function($id = null) {
-
-	if ($id == null) {
-		$snippets = Snippet::all();
-	}
-	else {
-		$snippets = Snippet::where('id', '=', $id)->first();
-	}
-	return View::make('snippet_view')->with('snippets', $snippets);
-});
-
-
-# Display Snippets based on tags
-Route::get('/tag-snippet/{id}', function($id) {
-
-	$tag = Tag::where('id', '=', $id)->first();
-	$snippets = $tag->snippets->toArray();
-	return View::make('tag_snippet')->with('snippets',$snippets)->with('tag', $tag);
-});
-
-
-
-
-
-
-# Display add form
-Route::get('/add/', function() {
-
-	return View::make('add');
-	
-});
-
-
-Route::post('/add/', function() {
-
-	# Step 1) Define the rules			
-		$rules = array(
-			'title' => 'required',
-			'language' => 'required',
-			'code' => 'required'	
-		);
-
-		# Step 2) 		
-		$validator = Validator::make(Input::all(), $rules);
-
-		# Step 3
-		if($validator->fails()) {
-			
-			return Redirect::to('/add')
-				->with('flash_message', "Oh Snap! Couldn't add the snippet. please fix the errors listed below.")
-				->withInput()
-				->withErrors($validator);
-		}		
-
-
-	$snippet = new Snippet();
-
-	$snippet->title = Input::get('title');
-	$snippet->language = Input::get('language');
-	$snippet->code = Input::get('code');
-	// connecting it to the user
-	$snippet->user_id = Auth::id();
-	$snippet->save();
-	
-
-	// loop 6 times for 6 tags
-	for ($i=1; $i <= 6; $i++) { 
-		
-		// get the user input
-		$tag = Input::get('tag'.$i);
-		
-
-		// if user has given some input
-		if ($tag) {
-
-			// Query the database to find if the tag exists
-			// $tags = DB::select(DB::raw('select * from tags where name = recursion'));
-			$tag_object = Tag::where('name', '=', $tag)->get();
-			
-			// if it exists - attach it to the snippet
-			if (!$tag_object->isEmpty()) {
-  					$snippet->tags()->attach($tag_object->first());
-			}
-			
-
-			// if it doesn't exist, create a new tag and attach it to the snippet
-			else {
-				$new_tag = Tag::create(array('name' => $tag));
-
-				$snippet->tags()->attach($new_tag);
-			}
-		}	
-	}
-
-	return Redirect::to('/profile')->with('flash_message', 'Your Snippet has been added');	
-});
-
-
+// access only to signed in users
 Route::get('/edit/{id}', 'SnippetController@getEdit');
 Route::post('/edit/{id}', 'SnippetController@postEdit');
 Route::get('/delete/{id}', 'SnippetController@getDelete');
+Route::get('/add', 'SnippetController@getAdd');
+Route::post('/add', 'SnippetController@postAdd');
 
-/*
-# Display edit form
-Route::get('/edit/{id}', function($id) {
+// access to all users (logged in as well as those who haven't signed up)
+Route::get('/snippets/{id?}', 'OpenSnippetController@getSnippets');
+Route::get('/tag-snippet/{id}', 'OpenSnippetController@getTagSnippets');
+Route::post('/query', 'OpenSnippetController@postQuery');
 
-	$snippet = Snippet::find($id);
-	//echo Pre::render($snippet);
-	$tags = $snippet->tags;
-	//echo $tags[2]['name'];
-	//echo Pre::render($tags);
-	//dd();
-	//return "yes route".$id;
-	//return View::make('edit');
 
-	return View::make('edit')->with('snippet', $snippet)
-							 ->with('tags', $tags);
-});
 
-Route::post('/edit{id}', function($id) {
 
-	$snippet = Snippet::find($id);
-	return $snippet->title;
 
-});
-*/
+
+
 
 
 
@@ -348,29 +228,6 @@ Route::get('/trigger-error',function() {
     # Class Foobar should not exist, so this should create an error
     $foo = new Foobar;
 
-});
-
-Route::post('/query', function() {
-
-	$query = Input::get('query');
-	
-	if($query) {
-		
-			# Eager load tags and author
-	 		$snippets = Snippet::with('tags')
-	 		->whereHas('tags', function($q) use($query) {
-			    $q->where('name', 'LIKE', "%$query%");
-			})
-			->orWhere('title', 'LIKE', "%$query%")
-			->orWhere('language', 'LIKE', "%$query%")
-			->get();	
-			$snippets = $snippets->toArray();
-			return View::make('query')->with('snippets', $snippets)
-									  ->with('query', $query);	
-	}
-	else {
-		return Redirect::to('/')->with('flash_message', 'Please type a valid query!');
-	}
 });
 
 /*

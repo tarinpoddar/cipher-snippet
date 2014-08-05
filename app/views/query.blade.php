@@ -1,5 +1,8 @@
 @extends('_master')
 
+@section('title')
+	{{ $query }}
+@stop
 
 @section('content')
 
@@ -11,7 +14,15 @@
 
 		<h4> <strong> {{ $snippet['title'] }} </strong> - {{ $snippet['language'] }}  </h4>
 		<div class="jumbotron">
-  			<p> {{ $snippet['code'] }} </p>
+  			
+  			<?php 
+				$code = str_replace("\n", "<br>", $snippet['code']);
+				$code = str_replace(" ", "&nbsp", $code);
+				echo "<p>";
+				echo $code;
+				echo "</p>";
+	  		?>
+
 		</div>
 
 	@endforeach

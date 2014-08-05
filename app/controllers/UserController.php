@@ -101,5 +101,14 @@ class UserController extends BaseController {
     	return Redirect::to('/')
     					->with('flash_message', 'Thank you for using Cipher Snippets! See you again soon');
 	}
+
+	public function getProfile() {
+		$live_user = Auth::user();
+		$snippets = Snippet::where('user_id', '=', $live_user->id)->get()->reverse()->toArray();
+
+		return View::make('profile')->with('snippets', $snippets)
+									->with('live_user', $live_user);
+
+	}
 	
 }

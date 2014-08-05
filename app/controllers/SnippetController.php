@@ -16,6 +16,76 @@ class SnippetController extends BaseController {
 		
 	}
 
+	
+	# Display add form
+	public function getAdd() {		
+		return View::make('add');
+	}
+
+	public function postAdd() {
+
+		# Step 1) Define the rules			
+		$rules = array(
+			'title' => 'required',
+			'language' => 'required',
+			'code' => 'required'	
+		);
+
+		# Step 2) 		
+		$validator = Validator::make(Input::all(), $rules);
+
+		# Step 3
+		if($validator->fails()) {
+			
+			return Redirect::to('/add')
+				->with('flash_message', "Oh Snap! Couldn't add the snippet. please fix the errors listed below.")
+				->withInput()
+				->withErrors($validator);
+		}		
+
+
+	$snippet = new Snippet();
+
+	$snippet->title = Input::get('title');
+	$snippet->language = Input::get('language');
+	$snippet->code = Input::get('code');
+	// connecting it to the user
+	$snippet->user_id = Auth::id();
+	$snippet->save();
+	
+
+	// loop 6 times for 6 tags
+	for ($i=1; $i <= 6; $i++) { 
+		
+		// get the user input
+		$tag = Input::get('tag'.$i);
+		
+
+		// if user has given some input
+		if ($tag) {
+
+			// Query the database to find if the tag exists
+			// $tags = DB::select(DB::raw('select * from tags where name = recursion'));
+			$tag_object = Tag::where('name', '=', $tag)->get();
+			
+			// if it exists - attach it to the snippet
+			if (!$tag_object->isEmpty()) {
+  					$snippet->tags()->attach($tag_object->first());
+			}
+			
+
+			// if it doesn't exist, create a new tag and attach it to the snippet
+			else {
+				$new_tag = Tag::create(array('name' => $tag));
+
+				$snippet->tags()->attach($new_tag);
+			}
+		}	
+	}
+
+	return Redirect::to('/profile')->with('flash_message', 'Your Snippet has been added');	
+	}
+
 
 	public function getEdit($id) {
 		

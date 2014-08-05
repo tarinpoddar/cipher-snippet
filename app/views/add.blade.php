@@ -36,7 +36,7 @@
     <div class="form-group">
     	<label for="textArea" class="col-lg-2 control-label">Code</label>
       <div class="col-lg-10">
-        {{ Form::textarea('code', null, array('class' => 'form-control', 'rows' => '15', 'id' => 'textArea',
+        {{ Form::textarea('code', null, array('class' => 'form-control', 'rows' => '15', 'id' => 'textbox',
             'placeholder' => 'Other people will use your code. Try and make it neat, short and generalistic')) }}
       </div>
     </div>
@@ -67,8 +67,7 @@
 
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
-        <button class="btn btn-default">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </div>
     </div>
   </fieldset>
