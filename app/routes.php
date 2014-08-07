@@ -54,6 +54,7 @@ Route::post('/query', 'OpenSnippetController@postQuery');
 /* ###### Helper Functions ###### */
 
 // Node to add data to the website quickly
+/*
 Route::get('/add-data', function() {
 
 	// Generating some users	
@@ -140,6 +141,7 @@ Route::get('/add-data', function() {
 	return "All done - Hurray!!";
 
 });
+*/
 
 // Just to test my database connection
 Route::get('mysql-test', function() {
@@ -215,6 +217,7 @@ Route::get('/trigger-error',function() {
 });
 
 // deletes all data in the database - for debugging purposes
+/*
 Route::get('/delete-data', function() {
 	
 	# Clear the tables to a blank slate
@@ -226,5 +229,5 @@ Route::get('/delete-data', function() {
 
 	return "data deleted =(  CHECK DATABASE";
 });
-
+*/
 
