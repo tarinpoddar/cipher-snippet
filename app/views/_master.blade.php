@@ -4,6 +4,7 @@
 
 	<title>@yield('title','Cipher Snippet')</title>
 	
+  <link rel="stylesheet" href="/styles/bootstrap.min.css" type="text/css">
 	<link rel="stylesheet" href="/styles/cosmo.css" type="text/css">
 	<link rel="stylesheet" href="/styles/style.css" type="text/css">
 	
@@ -57,7 +58,7 @@
 
     @endif
 
-<div class="container">
+  <div class="container">
 
 
 		
@@ -65,30 +66,11 @@
 		
 		@yield('body')
 
-</div>
+
+  </div>
 
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
-<script type="text/javascript"> 
-  $(document).delegate('#textbox', 'keydown', function(e) {
-  var keyCode = e.keyCode || e.which;
 
-  if (keyCode == 9) {
-    e.preventDefault();
-    var start = $(this).get(0).selectionStart;
-    var end = $(this).get(0).selectionEnd;
-
-    // set textarea value to: text before caret + tab + text after caret
-    $(this).val($(this).val().substring(0, start)
-                + "\t"
-                + $(this).val().substring(end));
-
-    // put caret at right position again
-    $(this).get(0).selectionStart =
-    $(this).get(0).selectionEnd = start + 1;
-  }
-});
-</script>
 
 </body>
 

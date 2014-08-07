@@ -50,11 +50,6 @@
 
   		</div>
 
-  		
-
 @endforeach
 	
-
-
-
 @stop

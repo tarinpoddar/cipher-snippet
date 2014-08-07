@@ -2,20 +2,20 @@
 
 class UserController extends BaseController {
 
-
+	// guests (non - logged in users) can only visit login page and sign up page
 	public function __construct() {
         $this->beforeFilter('guest', array('only' => array('getLogin','getSignup')));	
     }
 
-
+    // gets the signup page
     public function getSignup() {
-		
 		return View::make('signup');
-		
 	}
 
+	// processes the sign up form filled in by new users
 	public function postSignup() {
 
+		// VALIDATION
 		# Step 1) Define the rules			
 		$rules = array(
 			'name' => 'required',
@@ -26,7 +26,7 @@ class UserController extends BaseController {
 		# Step 2) 		
 		$validator = Validator::make(Input::all(), $rules);
 
-		# Step 3
+		# Step 3)
 		if($validator->fails()) {
 			
 			return Redirect::to('/signup')
@@ -35,6 +35,7 @@ class UserController extends BaseController {
 				->withErrors($validator);
 		}		
 
+		// Processes the data inputted by the user
 		$user = new User;
 		$user->name = Input::get('name');
 		$user->email = Input::get('email');
@@ -49,19 +50,20 @@ class UserController extends BaseController {
 				->withInput();
 		}
 
-		# Log in
+		# Logs in the user after the sign up details are validated and saved
 		Auth::login($user);
 		return Redirect::to('/')->with('flash_message', 'Welcome to Cipher Snippets!');
 	}
 
-
+	// gets the login page
 	public function getLogin() {
 		return View::make('login');
 	}
 
-
+	// processes the login info filled in by the user
 	public function postLogin() {
 
+		// VALIDATION
 		# Step 1) Define the rules			
 		$rules = array(
 			'email' => 'required|email',
@@ -71,7 +73,7 @@ class UserController extends BaseController {
 		# Step 2) 		
 		$validator = Validator::make(Input::all(), $rules);
 
-		# Step 3
+		# Step 3)
 		if($validator->fails()) {
 			
 			return Redirect::to('/login')
@@ -92,6 +94,7 @@ class UserController extends BaseController {
 		return Redirect::to('login');
 	}
 
+	// LOGS OUT THE USER
 	public function getLogout() {
 
 		# Log out
@@ -102,6 +105,7 @@ class UserController extends BaseController {
     					->with('flash_message', 'Thank you for using Cipher Snippets! See you again soon');
 	}
 
+	// Gets the live user's profile
 	public function getProfile() {
 		$live_user = Auth::user();
 		$snippets = Snippet::where('user_id', '=', $live_user->id)->get()->reverse()->toArray();

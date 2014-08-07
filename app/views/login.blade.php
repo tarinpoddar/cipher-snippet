@@ -45,7 +45,4 @@
   </fieldset>
 {{ Form::close() }}
 
-
-
-
 @stop

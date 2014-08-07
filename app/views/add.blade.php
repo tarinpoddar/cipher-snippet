@@ -14,6 +14,25 @@
 
   @endforeach
 
+<!-- js script - when entering a code snippet - remove the default tab use and make tab indent 4 spaces -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script> 
+
+  $('#textbox').live('keydown', function(e) { 
+  var keyCode = e.keyCode || e.which; 
+
+  if (keyCode == 9) { 
+    e.preventDefault(); 
+    //alert('tab pressed');
+    var val = this.value,
+                start = this.selectionStart,
+                end = this.selectionEnd;
+            this.value = val.substring(0, start) + '\t' + val.substring(end);
+            this.selectionStart = this.selectionEnd = start + 1;
+  } 
+});
+
+</script>
 
 {{ Form::open(array('url' => url('/add'), 'class'=>'form-horizontal', 'method' => 'post')) }}
   <fieldset>
@@ -41,11 +60,6 @@
       </div>
     </div>
 
-    
-       
-      
-
-
     <div class="form-group">
       <label class="col-lg-2 control-label">Tags <br> </label>
 
@@ -61,10 +75,6 @@
       </div>
     </div>
 
- 	
-
-
-
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
         <button type="submit" class="btn btn-primary">Add</button>
@@ -72,15 +82,5 @@
     </div>
   </fieldset>
 {{ Form::close() }}
-
-
-
-
-
-	
-
-
-
-
 
 @stop

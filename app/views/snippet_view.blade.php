@@ -7,7 +7,6 @@
 
 @section('content')
 
-	
 <!-- Many Snippets: use for each to trace through the array -->
 @if (count($snippets) > 1)
 	
@@ -17,11 +16,12 @@
 		<div class="jumbotron">
 			<!-- Quick fix dirty solution to printing blank lines inbetween which weren't printed by default --> 
 			<?php 
+			
 				$code = str_replace("\n", "<br>", $snippet['code']);
 				$code = str_replace(" ", "&nbsp", $code);
 				echo "<p>";
 				echo $code;
-				echo "</p>";
+				echo "</p>"; 
 	  		?>
 		</div>
 
@@ -41,7 +41,6 @@
 				echo "</p>";
 	  		?>
   	</div>
-
-
 @endif
+
 @stop

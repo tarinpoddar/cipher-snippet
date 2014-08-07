@@ -34,7 +34,7 @@ Route::get('/logout', ['before' => 'auth', 'uses' => 'UserController@getLogout']
 Route::get('/profile', 'UserController@getProfile');
 
 
-// access only to signed in users
+// access only to signed in users - SNIPPET CONTROLLER
 Route::get('/edit/{id}', 'SnippetController@getEdit');
 Route::post('/edit/{id}', 'SnippetController@postEdit');
 Route::get('/delete/{id}', 'SnippetController@getDelete');
@@ -42,6 +42,7 @@ Route::get('/add', 'SnippetController@getAdd');
 Route::post('/add', 'SnippetController@postAdd');
 
 // access to all users (logged in as well as those who haven't signed up)
+// EVERY USER CAN VIEW THE SNIPPETS AND ALSO SEARCH FOR THE SNIPPETS
 Route::get('/snippets/{id?}', 'OpenSnippetController@getSnippets');
 Route::get('/tag-snippet/{id}', 'OpenSnippetController@getTagSnippets');
 Route::post('/query', 'OpenSnippetController@postQuery');
@@ -50,27 +51,9 @@ Route::post('/query', 'OpenSnippetController@postQuery');
 
 
 
+/* ###### Helper Functions ###### */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ###### Helper Function ###### */
-
+// Node to add data to the website quickly
 Route::get('/add-data', function() {
 
 	// Generating some users	
@@ -170,7 +153,7 @@ Route::get('mysql-test', function() {
 });
 
 
-# /app/routes.php
+// to test database setting on production - for debugging purposes
 Route::get('/debug', function() {
 
     echo '<pre>';
@@ -216,13 +199,14 @@ Route::get('/debug', function() {
 
 });
 
-
+// to check the environment
 Route::get('/get-environment',function() {
 
     echo "Environment: ".App::environment();
 
 });
 
+// triggers an error - for debugging puposes
 Route::get('/trigger-error',function() {
 
     # Class Foobar should not exist, so this should create an error
@@ -230,7 +214,7 @@ Route::get('/trigger-error',function() {
 
 });
 
-/*
+// deletes all data in the database - for debugging purposes
 Route::get('/delete-data', function() {
 	
 	# Clear the tables to a blank slate
@@ -242,5 +226,5 @@ Route::get('/delete-data', function() {
 
 	return "data deleted =(  CHECK DATABASE";
 });
-*/
+
 
