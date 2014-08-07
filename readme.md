@@ -17,6 +17,7 @@ Title of Project: Cipher Snippet
 Description: This is an app for developers to share and view regularly used code snippets to make their coding life easier. They won't have to recode the regularly used code. They could just find the code snippet and use it in their projects easily. 
 
 Notes for the checker:
+
 1. I have used a bootstrap CSS theme. Source: http://bootswatch.com/cosmo/
 
 2. I have broken a few MVC principles at certain places in my views. The reason is, I couldn't find a way to concatenate strings in blade and after trying a lot of things, this was the last resort. Hence, just in a few places I have broken this rule.
